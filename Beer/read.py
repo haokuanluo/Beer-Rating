@@ -70,7 +70,7 @@ def get_dataset(train,test,fix_length=100, lower=False, vectors=None):
         lower=lower
     )
     print('tokening')
-    if torch.cuda.isavailable():
+    if torch.cuda.is_available():
         mydtype = torch.cuda.HalfTensor
     else:
         mdtype = torch.HalfTensor
