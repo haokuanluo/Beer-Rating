@@ -31,7 +31,7 @@ def tokenizer(comment):
     if (len(comment) > MAX_CHARS):
         comment = comment[:MAX_CHARS]
     return [
-        x.text for x in NLP.tokenizer(comment.decode('utf8')) if x.text != " "]
+        x.text for x in NLP.tokenizer(comment) if x.text != " "]
 
 def prepare_csv(train,test,seed=999,VAL_RATIO=0.2):
     df_train = pd.read_csv(train)
@@ -66,10 +66,14 @@ def get_dataset(train,test,fix_length=100, lower=False, vectors=None):
         fix_length=fix_length,
         tokenize=tokenizer,
         pad_first=True,
-        dtype=torch.LongTensor,
+        dtype=torch.cuda.LongTensor,
         lower=lower
     )
     print('tokening')
+    if torch.cuda.isavailable():
+        mydtype = torch.cuda.HalfTensor
+    else:
+        mdtype = torch.HalfTensor
     train, val = data.TabularDataset.splits(
         path='cache/', format='csv', skip_header=True,
         train='dataset_train.csv', validation='dataset_val.csv',
@@ -78,19 +82,19 @@ def get_dataset(train,test,fix_length=100, lower=False, vectors=None):
             ('review/text', comment),
             ('review/appearance', data.Field(
                 use_vocab=False, sequential=False,
-                dtype=torch.HalfTensor)),
+                dtype=mdtype)),
             ('review/aroma', data.Field(
                 use_vocab=False, sequential=False,
-                dtype=torch.HalfTensor)),
+                dtype=mdtype)),
             ('review/overall', data.Field(
                 use_vocab=False, sequential=False,
-                dtype=torch.HalfTensor)),
+                dtype=mdtype)),
             ('review/palate', data.Field(
                 use_vocab=False, sequential=False,
-                dtype=torch.HalfTensor)),
+                dtype=mdtype)),
             ('review/taste', data.Field(
                 use_vocab=False, sequential=False,
-                dtype=torch.HalfTensor)),
+                dtype=mdtype)),
         ])
     print("Reading test csv file...")
     test = data.TabularDataset(
