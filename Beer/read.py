@@ -71,7 +71,7 @@ def get_dataset(train,test,fix_length=100, lower=False, vectors=None):
     )
     print('tokening')
     if torch.cuda.is_available():
-        mydtype = torch.cuda.HalfTensor
+        mdtype = torch.cuda.HalfTensor
     else:
         mdtype = torch.HalfTensor
     train, val = data.TabularDataset.splits(
