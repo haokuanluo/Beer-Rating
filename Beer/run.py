@@ -2,20 +2,8 @@
 import pandas as pd
 
 import torch
-from torchtext import data
-from torchtext import datasets
-import random
-import re
-import spacy
-import numpy as np
 
-from read import get_data
-
-from read import prepare_csv
-from embed import embed
-from embed import embed_and_pad
 from regressor import train, load_model
-from regressor import eval
 from regressor import predict
 
 
@@ -38,7 +26,7 @@ def write_csv():
         line = ",".join([str(x) for x in rows])+'\n'
         f.write(line)
 
-    ## Python will convert \n to os.linesep
+
     f.close()
 
 

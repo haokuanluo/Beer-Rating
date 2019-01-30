@@ -1,13 +1,9 @@
-import torch.nn as nn
-import torch
-from sklearn.linear_model import LogisticRegression
-from sklearn import neighbors
+
 import numpy as np
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optim
+
 from torch.autograd import Variable
 from embed import embed_and_pad
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
@@ -26,7 +22,6 @@ def load_model(PATH):
         'num_layers': 2,
         'dropout': 0.5
     }
-    BATCH_SIZE = 64
     model = SeqLSTMClassify(args,outdim)
 
     model.load_state_dict(torch.load(PATH), strict=False)
@@ -73,7 +68,7 @@ class SeqLSTMClassify(nn.Module):
         results = self.fc(self.dropout(last_enc))
 
         loss = self.criterion(results, labels)
-        #print(results)
+
 
 
         return enc_state, results, loss

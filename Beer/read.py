@@ -1,11 +1,7 @@
 # coding: utf-8
 import pandas as pd
 
-import torch
-from torchtext import data
-from torchtext import datasets
-import random
-import re
+
 import spacy
 import numpy as np
 

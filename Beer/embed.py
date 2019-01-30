@@ -1,17 +1,14 @@
 # coding: utf-8
 import torch
-from torchtext import data
-from torchtext import datasets
-import random
-import re
+
 import numpy as np
-import spacy
+
 from gensim.models import KeyedVectors
 from torch.autograd import Variable
-#from regressor import to_torch
+
 filename = 'GoogleNews-vectors-negative300.bin'
 model = KeyedVectors.load_word2vec_format(filename, binary=True)
-#from __future__ import unicode_literals
+
 
 def to_torch(x, dtype='float', req = False):
   tor_type = torch.LongTensor if dtype == "int" else torch.FloatTensor
@@ -32,11 +29,10 @@ def embed(words):
     words = str.split(words)
     list = []
     for word in words:
-        #print('*'+word+'*')
+
         try:
             list.append(model[word])
-            #list.append(np.random.random_sample((300,)))
-            #print(model[word])
+
         except:
             pass
     return list
@@ -55,7 +51,6 @@ def embed_and_pad(df,idx):
     seq_lengths = torch.LongTensor([len(seq) for seq in x])
     seq_lengths, perm_idx = seq_lengths.sort(0, descending=True)
     seq_tensor = seq_tensor[perm_idx]
-    #print(y)
     y = y[perm_idx,:]
     seq_tensor = seq_tensor.transpose(0,1)
     y = to_torch(y)
